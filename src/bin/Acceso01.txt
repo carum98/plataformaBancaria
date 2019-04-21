@@ -1,0 +1,9 @@
+123456,123456,1
+789456,789456,5
+456,456,5
+zaq,zaq,5
+mlp,mlp,5
+cvb,cvb,3
+567,567,1
+fasdfa,dsfasdf,5
+test,test,1

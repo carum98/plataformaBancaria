@@ -1,0 +1,17 @@
+carum98,30111998,5
+test,test,1
+Prueba,Prueba,2
+Prueba1,Preuba1,1
+Prueba1,Preugba2,5
+null,null,1
+qwer,qwer,1
+123,123,1
+hola,hola,1
+null,null,2
+789,789,5
+null,null,2
+456,456,5
+159,159,5
+753,753,1
+zxc,zxc,5
+mnb,mnb,5
