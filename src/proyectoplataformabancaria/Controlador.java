@@ -13,9 +13,9 @@ import java.io.IOException;
  * @author carum_000
  */
 public class Controlador {
-    Cliente[] clienteArray = new Cliente[30];
-    Acceso[] accesoArray = new Acceso[30];
-    Cuenta[] cuentaArray = new Cuenta[30];
+    public Cliente[] clienteArray = new Cliente[30];
+    public Acceso[] accesoArray = new Acceso[30];
+    public Cuenta[] cuentaArray = new Cuenta[30];
     
     Archivo Archivo = new Archivo();
     
@@ -99,12 +99,13 @@ public class Controlador {
                 Archivo.leer(cuentaArray);  //Leer Cuentas
     }
     
-    public void mostrarCuenta(int IDCliente) throws FileNotFoundException, IOException{
+    public int mostrarCuenta(int IDCliente) throws FileNotFoundException, IOException{
         Archivo.leer(cuentaArray);  //Leer Cuentas
         int[] IDCuenta = new int[3]; //Array IDCuenta para almacenar los IDCuenta de las diferentess cuentas que puede tener un cliente
         int aux = 0; //auxciliar para para recorrer el arreglo IDCuenta
         int pos[] = new int[3];
-        
+        int IDCuentaSelec = 0;
+        int selec = 0;
         for (int i = 0; i < Util.campo(cuentaArray); i++) { //Se recorre el array de Cuentas
             if ((cuentaArray[i].getIDCliente()) == IDCliente) {     //IDCliente de la cuenta es igual al IDCliente que se optuvo del usuario y contraseña
                 IDCuenta[aux] = cuentaArray[i].getIDCuenta();    //se guarda el IDCuenta
@@ -120,17 +121,19 @@ public class Controlador {
                         System.out.println("Cuenta "+(j+1)+". "+cuentaArray[ IDCuenta[j] ]);
                     }
                 }
-                int selec = Util.intInput("Seleccione una cuenta");
+                selec = Util.intInput("Seleccione una cuenta");
                 System.out.println("Cuenta seleccionada \n"+cuentaArray[ pos[selec-1] ]); //se muestra la cuenta seleccionada
-                int modi = Util.intInput("Desea modificar el monto \n 1. Si 2. No");
-                if (modi == 1 && !(cuentaArray[pos[selec-1]].getTipo().equals("credito"))) {
-                    int monto = Util.intInput("Ingrese el nuevo monto");
-                    modificarCuenta(monto, cuentaArray[pos[selec-1]].getIDCuenta()); //parametros monto que se desea ingresar / IDCuenta que se desa modificar
-                }else{
-                    Util.ventanaMensa("Usted no puede modificar el monto");
-                }
+                IDCuentaSelec = cuentaArray[ pos[selec-1] ].getIDCuenta();
+//                int modi = Util.intInput("Desea modificar el monto \n 1. Si 2. No");
+//                if (modi == 1 && !(cuentaArray[pos[selec-1]].getTipo().equals("credito"))) {
+//                    int monto = Util.intInput("Ingrese el nuevo monto");
+//                    modificarCuenta(monto, cuentaArray[pos[selec-1]].getIDCuenta()); //parametros monto que se desea ingresar / IDCuenta que se desa modificar
+//                }else{
+//                    Util.ventanaMensa("Usted no puede modificar el monto");
+//                }
             }
         }
+        return IDCuentaSelec; //Retorna el ID de la cuenta que se selecciono
     }
     
     public void modificarCuenta(int monto, int IDCuenta) throws FileNotFoundException, IOException{
@@ -150,6 +153,7 @@ public class Controlador {
     }
     
     public void login() throws FileNotFoundException, IOException{
+        Pagar Pagar = new Pagar();
         String usuario, clave;
         boolean accesToken = false;
         Archivo.leer(accesoArray); //lee los accesos del TXT
@@ -164,11 +168,26 @@ public class Controlador {
                 System.out.println("Bienvenido a la plataforma web ");
                     int opcion = Util.intInput("Desea crear una cuenta \n 1.Solicitar Cuenta \n 2.Consultar Cuenta \n 3. Transferir \n 4. Pagar");
                     IDClient = Login.informacion(accesoArray, usuario,clave);
-                    if (opcion == 1) {
+                    switch (opcion) {
+                    case 1:
                         crearCuenta(IDClient); //crea la cuenta
                         Archivo.añadirInicia(Util.campo(clienteArray),(Util.campo(accesoArray)),Util.campo(cuentaArray));
-                    }else{
+                        break;
+                    case 2:
                         mostrarCuenta(IDClient); //Muestra las cuentas y solicita seleccionar una
+                        break;
+                    case 3:
+                        
+                        break;
+                    case 4:
+                        int IDCuentaSelec = mostrarCuenta(IDClient); 
+                        Pagar.servicio(clienteArray, cuentaArray, IDCuentaSelec);
+                                boolean aux = false;
+                                for (int i = 0; i < Util.campo(cuentaArray); i++) {
+                                Archivo.añadir(cuentaArray, i, aux);
+                                aux = true;
+        }
+                        break;
                     }
             }
         }

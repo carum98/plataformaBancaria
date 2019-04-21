@@ -66,4 +66,12 @@ public class Util {
         return contador;
         }
         
+        public static String listado(String[] Array){
+            String mensaje = "";
+            for (int i = 0; i < Array.length; i++) {
+                mensaje += i+1+". "+Array[i]+"\n";
+            }
+            return mensaje;
+        }
+        
 }
