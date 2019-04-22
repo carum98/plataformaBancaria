@@ -33,38 +33,36 @@ public class Util {
         int contador = 0;
         for (int i = 0; i < Array.length; i++) {
             if (Array[i]!=null) {
-                contador++;
-            }
-        }
-        return contador;
-        }
+                contador++;}}
+        return contador;}
+        
         public static int campo(Acceso[] Array2){
         int contador = 0;
         for (int i = 0; i < Array2.length; i++) {
             if (Array2[i]!=null) {
-                contador++;
-            }
-        }
-        return contador;
-        }
+                contador++;}}
+        return contador;}
+        
         public static int campo(Cuenta[] Array){
         int contador = 0;
         for (int i = 0; i < Array.length; i++) {
             if (Array[i]!=null) {
-                contador++;
-            }
-        }
-        return contador;
-        }
+                contador++;}}
+        return contador;}
+        
         public static int campo(int[] Array){
         int contador = 0;
         for (int i = 0; i < Array.length; i++) {
             if (Array[i]!=0) {
-                contador++;
-            }
-        }
-        return contador;
-        }
+                contador++;}}
+        return contador;}
+        
+        public static int campo(LogPagos[] Array){
+        int contador = 0;
+        for (int i = 0; i < Array.length; i++) {
+            if (Array[i]!=null) {
+                contador++;}}
+        return contador;}
         
         public static String listado(String[] Array){
             String mensaje = "";

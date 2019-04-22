@@ -19,7 +19,7 @@ import java.util.Scanner;
  */
 public class Archivo {
     
-    int[] inicia = new int[3];
+    int[] inicia = new int[4];
     
     public void leerInicia() throws FileNotFoundException{
         File file = new File("C:\\Users\\carum_000\\Desktop\\Cursos\\Nueva Carpeta\\ProyectoPlataformaBancaria\\src\\inicia.txt"); //se lee archivo con los valores inicales
@@ -28,26 +28,29 @@ public class Archivo {
             scanner = new Scanner(file);
             String linea = scanner.nextLine();
                 Scanner delimitar = new Scanner(linea);
-                String iniciaCliente = delimitar.next(); //se guarda la valiriable inicial de Cliente
+                String iniciaCliente = delimitar.next(); //se guarda la valiriable inicial de cliente
                 String iniciaClave = delimitar.next();   //se guarda la valiriable inicial de la clave
-                String iniciaCuenta = delimitar.next();
+                String iniciaCuenta = delimitar.next();  //se guarda la valiriable inicial de las cuentas
+                String iniciaLogs = delimitar.next();
                     inicia[0] = Integer.parseInt(iniciaCliente);    //se guarda en el array y se convierte a Integer
                     inicia[1] = Integer.parseInt(iniciaClave);      //se guarda en el array y se convierte a Integer
                     inicia[2] = Integer.parseInt(iniciaCuenta);     //se guarda en el array y se convierte a Integer
+                    inicia[3] = Integer.parseInt(iniciaLogs);
             scanner.close();
         }catch (FileNotFoundException e) {
             e.printStackTrace();
         }
     }
     
-    public void añadirInicia(int valorCliente, int valorClave, int valorCuenta){
+    public void añadirInicia(int valorCliente, int valorClave, int valorCuenta, int valorLog){
         FileWriter flwriter = null;
         try{
             flwriter = new FileWriter("C:\\Users\\carum_000\\Desktop\\Cursos\\Nueva Carpeta\\ProyectoPlataformaBancaria\\src\\inicia.txt", false);
             BufferedWriter bfwriter = new BufferedWriter(flwriter);
             bfwriter.write(valorCliente+" ");   //agrega lo valores iniciales al TXT
             bfwriter.write(valorClave+" ");
-            bfwriter.write(valorCuenta+"");
+            bfwriter.write(valorCuenta+" ");
+            bfwriter.write(valorLog+"");
             bfwriter.close();
         }catch (IOException e) {
             e.printStackTrace();
@@ -254,4 +257,68 @@ public class Archivo {
             e.printStackTrace();
         }
     }
+    
+    
+    public static void guardar(LogPagos[] historial) throws IOException{
+    FileWriter flwriter = null;      
+    try{
+        flwriter = new FileWriter("C:\\Users\\carum_000\\Desktop\\Cursos\\Nueva Carpeta\\ProyectoPlataformaBancaria\\src\\Logs.txt");            
+        BufferedWriter bfwrite = new BufferedWriter(flwriter);
+            bfwrite.write("IDCliente , IDCuenta, Informacion"+"\n");
+        bfwrite.close();
+    }catch (IOException e){
+        e.printStackTrace();
+    }finally {
+    if (flwriter != null){
+    try {
+         flwriter.close();
+    } catch (IOException e){
+        e.printStackTrace();
+        }
+        }
+    }
+    }
+    
+    public static void añadir(LogPagos[] historial, int i, boolean reescribir) throws IOException{
+        FileWriter flwriter = null;
+        try{
+            flwriter = new FileWriter("C:\\Users\\carum_000\\Desktop\\Cursos\\Nueva Carpeta\\ProyectoPlataformaBancaria\\src\\Logs.txt", reescribir);
+            BufferedWriter bfwriter = new BufferedWriter(flwriter);
+            bfwriter.write(historial[i].getIDCliente()+","+historial[i].getIDCuenta()+","+historial[i].getAccion()+"\n");
+            bfwriter.close();
+        }catch (IOException e) {
+            e.printStackTrace();
+        }
+        finally {
+        if (flwriter != null) {
+                try {
+                        flwriter.close();
+                } catch (IOException e) {
+                        e.printStackTrace();
+                }
+        }
+        }
+    }
+    
+    public void leer(LogPagos[] historial) throws FileNotFoundException{
+    leerInicia();  //se inicializa el metodo para que lea los valores inicales
+    File file = new File("C:\\Users\\carum_000\\Desktop\\Cursos\\Nueva Carpeta\\ProyectoPlataformaBancaria\\src\\Logs.txt");
+    Scanner scanner;
+    try{
+        scanner = new Scanner(file);
+        for (int i = 0; i < inicia[3]; i++) { 
+            String linea = scanner.nextLine();
+            if (linea != null) {
+                Scanner delimitar = new Scanner(linea);
+                  delimitar.useDelimiter("\\s*,\\s*");
+            LogPagos obCuenta = new LogPagos(Integer.parseInt(delimitar.next()),Integer.parseInt(delimitar.next()),delimitar.next());
+            historial[i] = obCuenta;
+            }
+        }
+        scanner.close();
+    }catch (FileNotFoundException e) {
+        e.printStackTrace();
+    }
+    }
+
 }

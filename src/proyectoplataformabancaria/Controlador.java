@@ -18,12 +18,14 @@ public class Controlador {
     public Cuenta[] cuentaArray = new Cuenta[30];
     
     Archivo Archivo = new Archivo();
-    
+
+
     public void crearCliente() throws FileNotFoundException, IOException{
+            Pagar Pagar = new Pagar();
         Archivo.leer(clienteArray); //Lee TXT Cliente
         Archivo.leer(accesoArray);  //Lee TXT Claves
         Archivo.leer(cuentaArray);  //Lee TXT Cuentas
-        
+        int logArray = Pagar.tamano(); //Lee el tamaño del array log
             String nombre = Util.stringInput("Ingrese su nombre");
             String apellido = Util.stringInput("Ingrese su apellido");
             String correo = Util.stringInput("Ingrese su correo electronico");
@@ -37,7 +39,7 @@ public class Controlador {
                     }
                 Archivo.añadir(clienteArray, aux);    //Añade informacion al TXT
             
-        Archivo.añadirInicia((Util.campo(clienteArray)),Util.campo(accesoArray),Util.campo(cuentaArray)); //se guarda en TXT el ultimo tamaño del arreglo
+        Archivo.añadirInicia((Util.campo(clienteArray)),Util.campo(accesoArray),Util.campo(cuentaArray),logArray); //se guarda en TXT el ultimo tamaño del arreglo
         Archivo.leer(clienteArray); //Lee TXT
         
         Util.ventanaMensa("Hola");
@@ -47,13 +49,14 @@ public class Controlador {
     }
     
     public void crearAcceso() throws IOException{
+            Pagar Pagar = new Pagar();
         long cedula = Util.intInput("Ingrese su numero de cedula");
         boolean vali = false;    //Inicializa validacion de usuario
         String usuario="",clave="";
         Archivo.leer(clienteArray); //Lee TXT Cliente
         Archivo.leer(accesoArray);  //Lee TXT Claves
         Archivo.leer(cuentaArray);  //Lee TXT Cuentas
-        
+        int logArray = Pagar.tamano(); //Lee el tamaño del array log
         for (int i = 0; i < clienteArray.length; i++) {
             if ((clienteArray[i]!=null) && (cedula == clienteArray[i].getCedula())) { //Se comprueba si el cliente existe
                 usuario = Util.stringInput("Crea usuario \n Usuario");
@@ -64,7 +67,7 @@ public class Controlador {
                 
                 Archivo.añadir(accesoArray, i); //Se añade accesos al TXT
                 vali = true;
-                Archivo.añadirInicia(Util.campo(clienteArray),(Util.campo(accesoArray)),Util.campo(cuentaArray)); //se guarda en TXT el ultimo tamaño del arreglo
+                Archivo.añadirInicia(Util.campo(clienteArray),(Util.campo(accesoArray)),Util.campo(cuentaArray),logArray); //se guarda en TXT el ultimo tamaño del arreglo
             }
         }
         Archivo.leer(accesoArray);//Lee TXT
@@ -137,6 +140,7 @@ public class Controlador {
     }
     
     public void modificarCuenta(int monto, int IDCuenta) throws FileNotFoundException, IOException{
+            Pagar Pagar = new Pagar();
         Archivo.leer(cuentaArray);
         for (int i = 0; i < Util.campo(cuentaArray); i++) {
             if (cuentaArray[i].IDCuenta == IDCuenta) {
@@ -153,25 +157,27 @@ public class Controlador {
     }
     
     public void login() throws FileNotFoundException, IOException{
-        Pagar Pagar = new Pagar();
+            Pagar Pagar = new Pagar();
         String usuario, clave;
         boolean accesToken = false;
         Archivo.leer(accesoArray); //lee los accesos del TXT
         Archivo.leer(clienteArray); //Lee TXT Cliente
+        int logArray = Pagar.tamano(); //Lee el tamaño del array log
         do {
             usuario = Util.stringInput("Ingrese su usuario"); //Se solicita usuario
             clave = Util.stringInput("Ingrese su clave");    //Se solicita contraseña
             accesToken = Login.validacion(accesoArray, usuario, clave);  //Ejecuta el metodo loding que regresa un boolean
         } while (accesToken==false);
         int IDClient = 1;
+        int IDCuentaSelec;
             if ( accesToken == true) {
                 System.out.println("Bienvenido a la plataforma web ");
-                    int opcion = Util.intInput("Desea crear una cuenta \n 1.Solicitar Cuenta \n 2.Consultar Cuenta \n 3. Transferir \n 4. Pagar");
+                    int opcion = Util.intInput("Desea crear una cuenta \n 1.Solicitar Cuenta \n 2.Consultar Cuenta \n 3. Transferir \n 4. Pagar \n 5. Historial de Pagos");
                     IDClient = Login.informacion(accesoArray, usuario,clave);
                     switch (opcion) {
                     case 1:
                         crearCuenta(IDClient); //crea la cuenta
-                        Archivo.añadirInicia(Util.campo(clienteArray),(Util.campo(accesoArray)),Util.campo(cuentaArray));
+                        Archivo.añadirInicia(Util.campo(clienteArray),(Util.campo(accesoArray)),Util.campo(cuentaArray),logArray);
                         break;
                     case 2:
                         mostrarCuenta(IDClient); //Muestra las cuentas y solicita seleccionar una
@@ -180,13 +186,18 @@ public class Controlador {
                         
                         break;
                     case 4:
-                        int IDCuentaSelec = mostrarCuenta(IDClient); 
-                        Pagar.servicio(clienteArray, cuentaArray, IDCuentaSelec);
+                        IDCuentaSelec = mostrarCuenta(IDClient); 
+                            Pagar.servicio(clienteArray, cuentaArray, IDCuentaSelec);
                                 boolean aux = false;
                                 for (int i = 0; i < Util.campo(cuentaArray); i++) {
-                                Archivo.añadir(cuentaArray, i, aux);
-                                aux = true;
-        }
+                                    Archivo.añadir(cuentaArray, i, aux);
+                                    aux = true;
+                                }
+                        Archivo.añadirInicia(Util.campo(clienteArray),(Util.campo(accesoArray)),Util.campo(cuentaArray),logArray);
+                        break;
+                    case 5:
+                        IDCuentaSelec = mostrarCuenta(IDClient);
+                        Pagar.mostrarHistorial(IDClient, IDCuentaSelec);
                         break;
                     }
             }

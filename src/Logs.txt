@@ -1,0 +1,7 @@
+14,4,Pago de servicio Proveedor AYAN numero de contrato 155 Saldo Pagado 15000
+14,4,Pago de servicio Proveedor Kolbi Numero de contrato 54854 Saldo Pagado 15000
+2,7,Pago de servicio Proveedor ESPH Numero de contrato 7548 Saldo Pagado 15000
+14,4,Pago de servicio Proveedor Cabletica Numero de contrato 15212 Saldo Pagado 8000
+2,7,Pago de servicio Proveedor ICE Numero de contrato 1558 Saldo Pagado 20000
+2,8,Pago de servicio Proveedor Cabletica Numero de contrato 17511 Saldo Pagado 8000
+2,8,Pago de servicio Proveedor Telecable Numero de contrato 5148 Saldo Pagado 12000
