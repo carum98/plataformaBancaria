@@ -199,7 +199,7 @@ public class Archivo {
     public static void guardar(Cuenta[] CuentaArray) throws IOException{
     FileWriter flwriter = null;      
     try{
-        flwriter = new FileWriter("C:\\Users\\carum_000\\Desktop\\Cursos\\Nueva Carpeta\\ProyectoPlataformaBancaria\\src\\Cuentas.txt");            
+        flwriter = new FileWriter("C:\\Users\\carum_000\\Desktop\\Cursos\\Nueva Carpeta\\ProyectoPlataformaBancaria\\src\\Cuenta.txt");            
         BufferedWriter bfwrite = new BufferedWriter(flwriter);
             bfwrite.write("IDCliente , IDCuenta, Monto, Numero de Cuenta, Tipo de cuenta"+"\n");
         bfwrite.close();
@@ -219,7 +219,7 @@ public class Archivo {
     public static void añadir(Cuenta[] CuentaArray, int i, boolean reescribir) throws IOException{
         FileWriter flwriter = null;
         try{
-            flwriter = new FileWriter("C:\\Users\\carum_000\\Desktop\\Cursos\\Nueva Carpeta\\ProyectoPlataformaBancaria\\src\\Cuenta02.txt", reescribir);
+            flwriter = new FileWriter("C:\\Users\\carum_000\\Desktop\\Cursos\\Nueva Carpeta\\ProyectoPlataformaBancaria\\src\\Cuenta.txt", reescribir);
             BufferedWriter bfwriter = new BufferedWriter(flwriter);
             bfwriter.write(CuentaArray[i].getIDCliente()+","+CuentaArray[i].getIDCuenta()+","+CuentaArray[i].getMonto()+","+CuentaArray[i].getNumeroDeCuenta()+","+CuentaArray[i].getTipo()+"\n");
             bfwriter.close();
@@ -239,7 +239,7 @@ public class Archivo {
     
     public void leer(Cuenta[] CuentaArray) throws FileNotFoundException{
         leerInicia();  //se inicializa el metodo para que lea los valores inicales
-        File file = new File("C:\\Users\\carum_000\\Desktop\\Cursos\\Nueva Carpeta\\ProyectoPlataformaBancaria\\src\\Cuenta02.txt");
+        File file = new File("C:\\Users\\carum_000\\Desktop\\Cursos\\Nueva Carpeta\\ProyectoPlataformaBancaria\\src\\Cuenta.txt");
         Scanner scanner;
         try{
             scanner = new Scanner(file);

@@ -23,8 +23,23 @@ public class Pagar {
             Luz =  {"ICE", "CNFL", "JASEC","ESPH"},
             cableInterFija = {"Kolbi", "Cabletica", "Telecable", "Claro", "Tigo", "Movistar"};
     
-    public void tarjeta(){
-        
+    public void tarjeta(Cliente[] clienteArray, Cuenta[] cuentaArray, int IDCuentaSelec, int IDCuentaPagar) throws FileNotFoundException, IOException{
+        int salPendi = 400000-cuentaArray[IDCuentaSelec].getMonto();
+        int selec = Util.intInput("Tarjeta a Pagar ->\n"+cuentaArray[IDCuentaSelec]+"\n Por medio de la cuenta ->"+cuentaArray[IDCuentaPagar]+"\n Saldo Pendiente: "+salPendi+" \nDesea proceder con el pago 1. Si  2. No");
+        if (selec == 1) {
+            int residuo = pago(salPendi, cuentaArray[IDCuentaPagar].getMonto());
+            cuentaArray[IDCuentaPagar].setMonto(residuo);
+            cuentaArray[IDCuentaSelec].setMonto(400000);
+            
+            String recibo = "Pago de tarjeta de credito tarjeta ID "+IDCuentaSelec+ " por un total de "+salPendi;
+            LogPagos obHisto = new LogPagos(clienteArray[cuentaArray[IDCuentaSelec].getIDCliente()-1].getIDcliente(), IDCuentaPagar, recibo);
+            
+            Archivo.leer(historial);
+            
+            int aux = Util.campo(historial);    //se busca un campo libre en el array
+            historial[aux] = obHisto;   //se almacena el objeto en el array
+            Archivo.añadir(historial,aux, true);
+        }
     }
     
     public void servicio(Cliente[] clienteArray, Cuenta[] cuentaArray, int IDCuentaSelec) throws FileNotFoundException, IOException {
