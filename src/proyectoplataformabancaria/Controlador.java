@@ -102,7 +102,7 @@ public class Controlador {
                 Archivo.leer(cuentaArray);  //Leer Cuentas
     }
     
-    public int mostrarCuenta(int IDCliente, boolean mostrar) throws FileNotFoundException, IOException{
+    public int mostrarCuenta(int IDCliente, boolean mostrar, String mensaje) throws FileNotFoundException, IOException{
         Archivo.leer(cuentaArray);      //Leer Cuentas
         int[] IDCuenta = new int[3];    //Array IDCuenta para almacenar los IDCuenta de las diferentess cuentas que puede tener un cliente
         int pos[] = new int[3];
@@ -124,7 +124,7 @@ public class Controlador {
                         if(mostrar == false && (cuentaArray[IDCuenta[j]].getTipo().equals("credito"))){
                             System.out.println("Cuenta "+(j+1)+". "+cuentaArray[ IDCuenta[j] ]);
                         }}}
-                selec = Util.intInput("Seleccione una cuenta");
+                selec = Util.intInput(mensaje);
                 System.out.println("Cuenta seleccionada \n"+cuentaArray[ pos[selec-1] ]); //se muestra la cuenta seleccionada
                 IDCuentaSelec = cuentaArray[ pos[selec-1] ].getIDCuenta();
             }
@@ -150,7 +150,8 @@ public class Controlador {
     }
     
     public void login() throws FileNotFoundException, IOException{
-            Pagar Pagar = new Pagar();
+        Pagar Pagar = new Pagar();
+        Transferencias Transferencias = new Transferencias();
         String usuario, clave;
         boolean accesToken = false;
         Archivo.leer(accesoArray); //lee los accesos del TXT
@@ -174,25 +175,27 @@ public class Controlador {
                         Archivo.añadirInicia(Util.campo(clienteArray),(Util.campo(accesoArray)),Util.campo(cuentaArray),logArray);
                         break;
                     case 2:
-                        mostrarCuenta(IDClient, true); //Muestra las cuentas y solicita seleccionar una
+                        mostrarCuenta(IDClient, true, "Seleccione la cuenta que desea consultar"); //Muestra las cuentas y solicita seleccionar una
                         break;
                     case 3:
-                        
+                        Transferencias.tranferencia(clienteArray, cuentaArray, IDClient);
+                        boolean auxi = false;
+                                for (int i = 0; i < Util.campo(cuentaArray); i++) {
+                                    Archivo.añadir(cuentaArray, i, auxi);
+                                    auxi = true;}
                         break;
                     case 4:
                         int selec = Util.intInput("1. Servicos       2. Tarjeta");
                         if (selec == 1) {
-                           IDCuentaSelec = mostrarCuenta(IDClient, true); 
+                           IDCuentaSelec = mostrarCuenta(IDClient, true, "Seleccione una cuenta"); 
                             Pagar.servicio(clienteArray, cuentaArray, IDCuentaSelec);
                                 boolean aux = false;
                                 for (int i = 0; i < Util.campo(cuentaArray); i++) {
                                     Archivo.añadir(cuentaArray, i, aux);
                                     aux = true;}                            
                         }else{
-                            Util.ventanaMensa("Seleccione la tarjeta que desea pagar");
-                                IDCuentaSelec = mostrarCuenta(IDClient, false); 
-                            Util.ventanaMensa("Seleccione la cuenta con la que desea pagar");
-                                int IDCuentaPagar = mostrarCuenta(IDClient, true);
+                                IDCuentaSelec = mostrarCuenta(IDClient, false, "Seleccione la tarjeta que desea pagar"); 
+                            int IDCuentaPagar = mostrarCuenta(IDClient, true, "Seleccione la cuenta con la que desea pagar");
                             Pagar.tarjeta(clienteArray, cuentaArray, IDCuentaSelec, IDCuentaPagar);
                             boolean aux = false;
                                 for (int i = 0; i < Util.campo(cuentaArray); i++) {
@@ -202,7 +205,7 @@ public class Controlador {
                             Archivo.añadirInicia(Util.campo(clienteArray),(Util.campo(accesoArray)),Util.campo(cuentaArray),logArray);
                         break;
                     case 5:
-                        IDCuentaSelec = mostrarCuenta(IDClient,true);
+                        IDCuentaSelec = mostrarCuenta(IDClient,true, "Seleccione la cuenta que desea ver el historial");
                         Pagar.mostrarHistorial(IDClient, IDCuentaSelec);
                         break;
                     }
