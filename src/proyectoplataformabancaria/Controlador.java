@@ -156,6 +156,7 @@ public class Controlador {
         boolean accesToken = false;
         Archivo.leer(accesoArray); //lee los accesos del TXT
         Archivo.leer(clienteArray); //Lee TXT Cliente
+        Archivo.leer(cuentaArray);
         int logArray = Pagar.tamano(); //Lee el tamaño del array log
         int IDClient = 1;
         int IDCuentaSelec = 0;
@@ -166,23 +167,25 @@ public class Controlador {
         } while (accesToken==false);
 
             if ( accesToken == true) {
-                System.out.println("Bienvenido a la plataforma web ");
+                IDClient = Login.informacion(accesoArray, usuario,clave);
+                System.out.println("Bienvenido a la plataforma web \n"+clienteArray[IDClient-1]);
                     int opcion = Util.intInput("Desea crear una cuenta \n 1.Solicitar Cuenta \n 2.Consultar Cuenta \n 3. Transferir \n 4. Pagar \n 5. Historial de Pagos");
-                    IDClient = Login.informacion(accesoArray, usuario,clave);
+                    
                     switch (opcion) {
                     case 1:
                         crearCuenta(IDClient); //crea la cuenta
-                        Archivo.añadirInicia(Util.campo(clienteArray),(Util.campo(accesoArray)),Util.campo(cuentaArray),logArray);
+                        Archivo.añadirInicia(Util.campo(clienteArray),(Util.campo(accesoArray)),Util.campo(cuentaArray),logArray-1);
                         break;
                     case 2:
                         mostrarCuenta(IDClient, true, "Seleccione la cuenta que desea consultar"); //Muestra las cuentas y solicita seleccionar una
                         break;
                     case 3:
-                        Transferencias.tranferencia(clienteArray, cuentaArray, IDClient);
+                        int IDCuentaOrigen = mostrarCuenta(IDClient, true, "Seleccione la cuenta Origen");
+                        Transferencias.tranferencia(clienteArray, cuentaArray, IDClient, IDCuentaOrigen);
                         boolean auxi = false;
                                 for (int i = 0; i < Util.campo(cuentaArray); i++) {
                                     Archivo.añadir(cuentaArray, i, auxi);
-                                    auxi = true;}
+                                auxi = true;}
                         break;
                     case 4:
                         int selec = Util.intInput("1. Servicos       2. Tarjeta");

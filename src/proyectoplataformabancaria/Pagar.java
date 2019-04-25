@@ -34,11 +34,12 @@ public class Pagar {
             String recibo = "Pago de tarjeta de credito tarjeta ID "+IDCuentaSelec+ " por un total de "+salPendi;
             LogPagos obHisto = new LogPagos(clienteArray[cuentaArray[IDCuentaSelec].getIDCliente()-1].getIDcliente(), IDCuentaPagar, recibo);
             
-            Archivo.leer(historial);
-            
-            int aux = Util.campo(historial);    //se busca un campo libre en el array
-            historial[aux] = obHisto;   //se almacena el objeto en el array
-            Archivo.añadir(historial,aux, true);
+            agregarHistorial(obHisto);
+//            Archivo.leer(historial);
+//            
+//            int aux = Util.campo(historial);    //se busca un campo libre en el array
+//            historial[aux] = obHisto;   //se almacena el objeto en el array
+//            Archivo.añadir(historial,aux, true);
         }
     }
     
@@ -80,11 +81,12 @@ public class Pagar {
             Util.ventanaMensa("Pago realizado \n"+cuentaArray[IDCuentaSelec].toString()); //se confirma pago
             String recibo = "Pago de servicio Proveedor "+prov+" Numero de contrato "+contrato+" Saldo Pagado "+montoPagar; //se crea el recibo para el log
                 LogPagos obHisto = new LogPagos(cliente.getIDcliente(),IDCuentaSelec,recibo);   //se inicializa y crea el objeto
-            Archivo.leer(historial);
-            
-            int aux = Util.campo(historial);    //se busca un campo libre en el array
-            historial[aux] = obHisto;   //se almacena el objeto en el array
-            Archivo.añadir(historial,aux, true);
+                
+                agregarHistorial(obHisto);
+//            Archivo.leer(historial);
+//            int aux = Util.campo(historial);    //se busca un campo libre en el array
+//            historial[aux] = obHisto;   //se almacena el objeto en el array
+//            Archivo.añadir(historial,aux, true);
 
         }else if(cate==5){
             Util.intInput("Ingrese el numero telefonico al cual desea recargar");
@@ -101,6 +103,14 @@ public class Pagar {
         }
         int residuo = montoCuenta-montoPagar;
         return residuo;
+    }
+    
+    public void agregarHistorial(LogPagos obHisto) throws FileNotFoundException, IOException{
+            Archivo.leer(historial);
+            
+            int aux = Util.campo(historial);    //se busca un campo libre en el array
+            historial[aux] = obHisto;   //se almacena el objeto en el array
+            Archivo.añadir(historial,aux, true);
     }
     
     public void mostrarHistorial(int IDCliente, int IDCuentaSelec) throws FileNotFoundException{

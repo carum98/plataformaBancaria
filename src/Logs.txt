@@ -8,3 +8,6 @@
 3,9,Pago de servicio Proveedor Kolbi Numero de contrato 1755 Saldo Pagado 12000
 3,13,Pago de tarjeta de credito tarjeta ID 9 por un total de 12000
 3,13,Pago de tarjeta de credito tarjeta ID 9 por un total de 12000
+14,4,Pago de servicio Proveedor CNFL Numero de contrato 1554 Saldo Pagado 20000
+14,3,Transferenia Numero de cuenta 10875 a nombre de pedro por un monto de 7000
+14,3,Transferenia Numero de cuenta10875 a nombre de pedro por un monto de 3000
