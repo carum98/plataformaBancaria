@@ -5,6 +5,7 @@
  */
 package proyectoplataformabancaria;
 
+import java.io.IOException;
 import javax.swing.JOptionPane;
 
 /**
@@ -14,7 +15,7 @@ import javax.swing.JOptionPane;
 public class Util {
     
         public static String stringInput(String mensaje){ //devuelve un mensaje qiue retorna un String
-            return JOptionPane.showInputDialog(mensaje);
+            return JOptionPane.showInputDialog(null, mensaje /*, "Login" ,JOptionPane.INFORMATION_MESSAGE*/);
         }
         
         public static int intInput(String mensaje){ //devuelve un mensaje que retorna un int
@@ -70,6 +71,25 @@ public class Util {
                 mensaje += i+1+". "+Array[i]+"\n";
             }
             return mensaje;
+        }
+        
+        public static boolean confirmacion(String mensaje){
+            boolean confirm = false;
+            int selec;
+                selec = JOptionPane.showConfirmDialog(null, mensaje,"Confirmacion" ,JOptionPane.YES_NO_OPTION);
+                    if (selec == 0) {
+                        confirm = true;
+                    }else if(selec == 1){
+                        confirm = false;
+                    }   
+            return confirm;
+        }
+        
+        public static void actualizarTXT(Cuenta[] cuentaArray) throws IOException{
+            boolean auxi = false;
+            for (int i = 0; i < Util.campo(cuentaArray); i++) {
+                Archivo.añadir(cuentaArray, i, auxi);
+            auxi = true;}
         }
         
 }

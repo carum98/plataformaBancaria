@@ -14,3 +14,7 @@ test12,test12,13
 carum98,30111998,14
 carumtito,c3011998,15
 pedro,123456,16
+prueba,prueba,17
+viriam,viriam,18
+glori,glori,19
+rodolfo,rodolfo,20

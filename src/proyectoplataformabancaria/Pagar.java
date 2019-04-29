@@ -72,17 +72,18 @@ public class Pagar {
             
             int contrato = Util.intInput("Ingrese el numero de contrato");
                 Util.ventanaMensa(prov+"\n Contrato a nombre de "+cliente.getNombre()+"\n cedula "+cliente.getCedula()+"\n Pago pendiente "+montoPagar);
-                int opci = Util.intInput("Proceder con el pago \n 1. Si 2. No");
+                boolean confirm = Util.confirmacion("Proceder con el pago");
                 int residuo = 0;
-            if (opci == 1) {
+            if (confirm) {
                 residuo = pago(montoPagar, cuentaArray[IDCuentaSelec].getMonto());
-            }
-            cuentaArray[IDCuentaSelec].setMonto(residuo);
-            Util.ventanaMensa("Pago realizado \n"+cuentaArray[IDCuentaSelec].toString()); //se confirma pago
-            String recibo = "Pago de servicio Proveedor "+prov+" Numero de contrato "+contrato+" Saldo Pagado "+montoPagar; //se crea el recibo para el log
-                LogPagos obHisto = new LogPagos(cliente.getIDcliente(),IDCuentaSelec,recibo);   //se inicializa y crea el objeto
+                    cuentaArray[IDCuentaSelec].setMonto(residuo);
+                    Util.ventanaMensa("Pago realizado \n"+cuentaArray[IDCuentaSelec].toString()); //se confirma pago
+                    String recibo = "Pago de servicio Proveedor "+prov+" Numero de contrato "+contrato+" Saldo Pagado "+montoPagar; //se crea el recibo para el log
+                    LogPagos obHisto = new LogPagos(cliente.getIDcliente(),IDCuentaSelec,recibo);   //se inicializa y crea el objeto
                 
                 agregarHistorial(obHisto);
+            }
+
 //            Archivo.leer(historial);
 //            int aux = Util.campo(historial);    //se busca un campo libre en el array
 //            historial[aux] = obHisto;   //se almacena el objeto en el array
@@ -124,7 +125,7 @@ public class Pagar {
     
     public int tamano() throws FileNotFoundException{   //Regrese el tamaño de array Historial
         Archivo.leer(historial);
-        int tamano = Util.campo(historial)+1;
+        int tamano = Util.campo(historial);
         return tamano;
     }
 }

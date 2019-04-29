@@ -14,3 +14,7 @@ test12,test12,test12,4523,4523,13
 Carlos,Umana,carumtito@gmai.com,117270664,61746128,14
 Eduardo,Acevedo,carum98@gmai.com,32168548,8888888,15
 pedro,perez,perez@hotmail.es,753159,456123,16
+prueba,prueba,prueba,1542,3695,17
+Viriam,Umana,viriam@gmail.com,14735,89563,18
+Gloriana,Umana,gloriana@gmail.com,585264,96899,19
+Rodolfo,Garnier,rodorlfo@gmail.com,518634,39959,20
