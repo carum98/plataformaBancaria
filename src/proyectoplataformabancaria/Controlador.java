@@ -16,14 +16,12 @@ public class Controlador {
     public Cliente[] clienteArray = new Cliente[30];    //Se crea Array de clientes
     public Acceso[] accesoArray = new Acceso[30];       //Se crea Array de Accesos (Contaseña)
     public Cuenta[] cuentaArray = new Cuenta[30];       //Se crea Array de Cuentas
-    
     Archivo Archivo = new Archivo();    //Se instancia la clase Archivo
-
     public void crearCliente() throws FileNotFoundException, IOException{ //Metodo de creacion de Clientes
         Pagar Pagar = new Pagar();      //Se instancia la clase Pagar
-        Archivo.leer(clienteArray); //Lee TXT Cliente y los carga en clienteArray
-        Archivo.leer(accesoArray);  //Lee TXT Claves y los carga en accesoArray
-        Archivo.leer(cuentaArray);  //Lee TXT Cuentas y los carga en cuentaArray
+        Archivo.leer(clienteArray);     //Lee TXT Cliente y los carga en clienteArray
+        Archivo.leer(accesoArray);      //Lee TXT Claves y los carga en accesoArray
+        Archivo.leer(cuentaArray);      //Lee TXT Cuentas y los carga en cuentaArray
             String nombre = Util.stringInput("Ingrese su nombre");              //Solicita el nombre del cliente | almacena en como variable tipo String en nombre
             String apellido = Util.stringInput("Ingrese su apellido");          //Solicita el apellido del cliente | almacena en como variable tipo String en apellido
             String correo = Util.stringInput("Ingrese su correo electronico");  //Solicita el correo del cliente | almacena en como variable tipo String en correo
@@ -57,8 +55,8 @@ public class Controlador {
                 int IDAcceso = clienteArray[i].getIDcliente();          //Crea ID de Acceso
                 Acceso accesoOb = new Acceso(usuario,clave,IDAcceso);   //Se instancia Acceso y se envia al constructor Usuario, Contraseña y ID del cliente
                 accesoArray[i] = accesoOb;                              //Se agrega Objeto al Array de Acceso
-                Archivo.añadir(accesoArray, i); //Se añade accesos del cliente al TXT
-                vali = true;                    //Validacion para saber si se creo el acceso
+                Archivo.añadir(accesoArray, i);                         //Se añade accesos del cliente al TXT
+                vali = true;                                            //Validacion para saber si se creo el acceso
                 Archivo.añadirInicia(Util.campo(clienteArray),(Util.campo(accesoArray)),Util.campo(cuentaArray),logArray); //Se añade al archivo inicializador el tamaño de los arreglos
             }
         }
@@ -70,7 +68,7 @@ public class Controlador {
                     }}
         }
     
-    public void crearCuenta(int IDCliente) throws FileNotFoundException, IOException{ //Metodo de creacion de cuentas, recibe el IDCliente 
+    public boolean crearCuenta(int IDCliente) throws FileNotFoundException, IOException{ //Metodo de creacion de cuentas, recibe el IDCliente 
         Archivo.leer(cuentaArray);                                              //Leer TXT de cuentas y lo almacena en el arraay de cuentas
         String[] tipos = {"corriente","ahorros","debito","credito"};            //Se inicializan los tipos de cuentas que se pueden crear
             int selecTipo = Util.intInput("Seleccione un tipo de Cuenta Bancaria \n"+ Util.listado(tipos)); //Se solicita el tipo de cuenta que desea crear
@@ -86,13 +84,19 @@ public class Controlador {
                 if(tipos[selecTipo-1].equals("ahorros")){                       //Si el usuario requiere una tarjeta de ahorros
                         monto = 0;                                              //La cuenta inicia con un monto de 0
                 }
-            Cuenta obCuenta = new Cuenta(IDCliente, IDCuenta, monto, numeroDeCuenta, tipoCuenta); //Se instancia la clase Cuenta con el nombre obCuenta y se encia al constructor el ID del cliente, ID de cuenta, el monto de la cuenta, el numero de cuenta y el tipo de cuenta
-            int aux = Util.campo(cuentaArray);                                  //Auxiliar para indicar un campo libre en el Array
-            cuentaArray[aux] = obCuenta;                                        //Se cra el objeto en el array 
+                boolean cofirm = Util.confirmacion("Desea crear la cuenta");
+                if (cofirm) {
+                    Cuenta obCuenta = new Cuenta(IDCliente, IDCuenta, monto, numeroDeCuenta, tipoCuenta); //Se instancia la clase Cuenta con el nombre obCuenta y se encia al constructor el ID del cliente, ID de cuenta, el monto de la cuenta, el numero de cuenta y el tipo de cuenta
+                    int aux = Util.campo(cuentaArray);                          //Auxiliar para indicar un campo libre en el Array
+                    cuentaArray[aux] = obCuenta;                                //Se cra el objeto en el array 
                 System.out.println(Util.campo(cuentaArray));
-                Archivo.añadir(cuentaArray, (aux),true);                      //Crear Cuenta la cuenta en el TXT | se envia el Array de Cuentas, la pocision de la cuenta y el boolean True para que  no se sobreescriba
+                Archivo.añadir(cuentaArray, (aux),true);                        //Crear Cuenta la cuenta en el TXT | se envia el Array de Cuentas, la pocision de la cuenta y el boolean True para que  no se sobreescriba
                 Archivo.leer(cuentaArray);                                      //Leer TXT de las Cuentas
                 Util.ventanaMensa(cuentaArray[aux].toString());
+                }else{
+                    Util.ventanaMensa("Proceso cancelado");
+                }
+                return cofirm;
     }
     
     public int mostrarCuenta(int IDCliente, boolean mostrar, String mensaje) throws FileNotFoundException, IOException{ //Metodo para mostrar cuentas, recibe el ID del Cliente, un boolean para saber si muestra todas las cuentas o solo las tarjetas y el mensaje que se desea cambiar
@@ -101,26 +105,28 @@ public class Controlador {
         int pos[] = new int[3];                                             //Array para saber la pocision que eligo el usuario
         int IDCuentaSelec = 0, selec = 0, aux = 0;                          //Se incializan variables
         String cuentas = "";                                                //Se inicaliza cuentas para almacenar la informacion de las cuentas y mostrarlas en una sola ventana
-        
-        for (int i = 0; i < Util.campo(cuentaArray); i++) {                 //Se recorre el array de Cuentas
+
+        for (int i = 0; i <  Util.campo(cuentaArray); i++) {                 //Se recorre el array de Cuentas
             if ((cuentaArray[i].getIDCliente()) == IDCliente) {             //Si el ID del cliente que se registro es igual a ID de las Cuentas
                 IDCuenta[aux] = cuentaArray[i].getIDCuenta();               //se guarda el IDCuenta de las cuentas que tiene el cliente
                 aux++;}}
         for (int i = 0; i < Util.campo(clienteArray); i++) {                //Se recorre el array de Clientes
             if (clienteArray[i].getIDcliente() == IDCliente) {              //Si el ID del cliente que se registro es igual a ID de las Cuentas
-                cuentas = "Bienvenido "+clienteArray[i].getNombre()+" sus cuentas son \n";
+                cuentas = "\n \t Bienvenido "+clienteArray[i].getNombre()+" sus cuentas son \n";
                 for (int j = 0; j < Util.campo(IDCuenta); j++) {            //Muestra todas las cuentas
                     if (clienteArray[i].getIDcliente() == IDCliente) {
                         pos[j] = IDCuenta[j];                               //se guarda en pos el ID de Cuenta en cada posicion
+                        Cuenta cuenta = cuentaArray[ IDCuenta[j] ];
                         if (mostrar == true) {                              //true muestra todas las cuentas 
-                            cuentas = cuentas + ("Cuenta "+(j+1)+". "+cuentaArray[ IDCuenta[j] ]+"\n");
-                        }
+                            cuentas = cuentas + ("\n"+(j+1)+". Cuenta: "+cuenta.getTipo()+"        Numero de cuenta: "+cuenta.getNumeroDeCuenta()+"        Saldo: "+cuenta.getMonto());}
                         if(mostrar == false && (cuentaArray[IDCuenta[j]].getTipo().equals("credito"))){ //y false muestra solo las tarjetas
-                            cuentas = cuentas + ("Cuenta "+(j+1)+". "+cuentaArray[ IDCuenta[j] ]+"\n");
-                        }}}
-                Util.ventanaMensa(cuentas);                                 //Muestra todas las cuentas del cliente
-                selec = Util.intInput(mensaje);                             //Muestra el mensaje que se envia
-                Util.ventanaMensa("Cuenta seleccionada \n"+cuentaArray[ pos[selec-1] ]); //se muestra la cuenta seleccionada
+                            cuentas = cuentas + ((j+1)+". Cuenta: "+cuenta.getTipo()+"        Numero de cuenta: "+cuenta.getNumeroDeCuenta()+"        Saldo: "+cuenta.getMonto()+"\n");
+                        }}
+                    cuentas+="\n";
+                }
+                selec = Util.intInput(mensaje+"\n"+cuentas);                             //Muestra todas las cuentas del cliente y se solicita una
+                Cuenta cuenSelec = cuentaArray[ pos[selec-1] ];
+                Util.ventanaMensa("Datos de cuenta seleccionada \n"+"\nNumero de cuenta: "+cuenSelec.getNumeroDeCuenta()+"\nCuenta: "+cuenSelec.getTipo()+"\nSaldo: "+cuenSelec.getMonto()+"\nID del Cliente: "+cuenSelec.getIDCliente()+"\nID de la Cuenta: "+cuenSelec.getIDCuenta()); //se muestra la cuenta seleccionada
                 IDCuentaSelec = cuentaArray[ pos[selec-1] ].getIDCuenta();  //Almacena el ID de la cuenta que se selecciono
             }
         }
@@ -131,14 +137,11 @@ public class Controlador {
         Archivo.leer(cuentaArray);                                          //Lee TXT de cuentas y lo almacena en cuentaArray
         for (int i = 0; i < Util.campo(cuentaArray); i++) {                 //Recorre el array de las cuentas
             if (cuentaArray[i].IDCuenta == IDCuenta) {                      //Si el ID de la cuentas Seleccionada es igual al ID encontrado
-                cuentaArray[i].setMonto(monto);                             //Coloca el monto que se recibio como un parametro
-            }
-        }
+                cuentaArray[i].setMonto(monto); }}                            //Coloca el monto que se recibio como un parametro
         boolean aux = false;                                                //Se inicializa auxciliar en False para que la primera vez que ingresa al metodo añadir sobreescriba todo el arreglo
         for (int i = 0; i < Util.campo(cuentaArray); i++) {                 //Recorre todo el array de cuentas para almacenarlo en el TXT de cuentas
             Archivo.añadir(cuentaArray, i, aux);                            //Añade al TXT | se envia el array de cuentas, la ubicacion en el array y el auxiliar
-            aux = true;                                                     //Cambia el auxiliar a True para que ya no se sobreescriba
-        }
+            aux = true;}                                                     //Cambia el auxiliar a True para que ya no se sobreescriba
         Archivo.leer(cuentaArray);                                          //Lee TXT de las cuentas
         System.out.println(cuentaArray[IDCuenta]);                          //Muestra la cuenta ya con el monto modificado
     }
@@ -151,45 +154,60 @@ public class Controlador {
         Archivo.leer(cuentaArray);                  //Lee TXT de Cuentas
         int logArray = Pagar.tamano();              //Lee el tamaño del array log                  
         int IDCuentaSelec = 0;                      //Inicializa el ID de la cuenta seleccionanda por el usuario
-        
         int IDClient = Login.login(accesoArray);    //Realiza el proceso de Login y Validacion, y retorna el ID del cliente correpondiente a las credenciales de acceso
-        
-            if ( (IDClient>=0) && (IDClient <= Util.campo(clienteArray))) {                         //Comprueba que el ID del cliente sea valido | Mayor a 0 y Menor que el tamaño de los campos utilizados en el arreglo
-                Util.ventanaMensa("Bienvenido a la plataforma web \n"+clienteArray[IDClient-1]);    //Muestra mensaje de bienvenida al usuario
-                String[] opciones = {"Solicitar Cuenta" ,"Consultar Cuenta", "Transferir", "Pagar" , "Historial de Pagos"};    //Inicializa las opciones de seleccion
-                    int opcion = Util.intInput("Desea crear una cuenta \n"+Util.listado(opciones));    //Solicita al usuario una opocion
+        boolean complete=false, continuar=false;    
+        if ( (IDClient>=0) && (IDClient <= Util.campo(clienteArray))) {                         //Comprueba que el ID del cliente sea valido | Mayor a 0 y Menor que el tamaño de los campos utilizados en el arreglo
+            Cliente cliente = clienteArray[IDClient-1];
+            Util.ventanaMensa("Bienvenido a la plataforma web \n"+cliente.getNombre()+" "+cliente.getApellido());    //Muestra mensaje de bienvenida al usuario
+                String[] opciones = {"Solicitar Cuenta" ,"Consultar Cuenta", "Transferir", "Pagar" , "Historial de Pagos", "Informacion Personal", "Salir"};    //Inicializa las opciones de seleccion
+                do{
+                int opcion = Util.intInput("Plataforma Bancaria \n"+Util.listado(opciones));    //Solicita al usuario una opocion
                     switch (opcion) {
                     case 1:                         //Opcion 1, Crear cuenta nueva
-                        crearCuenta(IDClient);      //Llama al mentodo crerCuenta y le envia como parametro el ID de la cuenta
+                        complete = crearCuenta(IDClient);                                                            //Llama al mentodo crerCuenta y le envia como parametro el ID de la cuenta
+                        if (complete) {logArray = logArray+1;} 
                         Archivo.añadirInicia(Util.campo(clienteArray),(Util.campo(accesoArray)),Util.campo(cuentaArray),logArray); //Actualiza el archivo inicializador
+                        continuar=Util.confirmacion("Desea continuar");
                         break;
                     case 2:                         //Opcion 2, Mostrar las cuentas que tiene el cliente
-                        mostrarCuenta(IDClient, true, "Seleccione la cuenta que desea consultar"); //Muestra las cuentas y solicita seleccionar una para mostrar mas informacion
+                        mostrarCuenta(IDClient, true, "Seleccione la cuenta que desea consultar");        //Muestra las cuentas y solicita seleccionar una para mostrar mas informacion
+                        continuar=Util.confirmacion("Desea continuar");
                         break;
                     case 3:                         //Opcion 3, Realizar transferencias a otras cuentas
                         int IDCuentaOrigen = mostrarCuenta(IDClient, true, "Seleccione la cuenta Origen");//Muestra las cuentas del cliente y retorna la cuenta com la cual se desea hacer la tranferencia
-                        Transferencias.tranferencia(clienteArray, cuentaArray, IDClient, IDCuentaOrigen); //Llama al metodo Transferencia | se envia el array de aclientes, array de cuentas, ID del cliente y ID de la cuenta que selecciono el usuairo para realizar la transferencia
+                        complete = Transferencias.tranferencia(clienteArray, cuentaArray, IDClient, IDCuentaOrigen); //Llama al metodo Transferencia | se envia el array de aclientes, array de cuentas, ID del cliente y ID de la cuenta que selecciono el usuairo para realizar la transferencia
                         Util.actualizarTXT(cuentaArray);                                                  //Medoto actulizarTXT, recorre todo el TXT y lo actuliza con los cambios realizados en la transferencia
+                        if (complete) {logArray = logArray+1;}                                            //Si complete es true suma 1 a logArray, pára aumentar el archivo inicializador
                         Archivo.añadirInicia(Util.campo(clienteArray),(Util.campo(accesoArray)),Util.campo(cuentaArray),logArray);  //Actualiza el archivo inicializador
+                        continuar=Util.confirmacion("Desea continuar");
                         break;
                     case 4:                         //Opcion 4, Realizar pago de servicions o tarjeta
                         int selec = Util.intInput("1. Servicos \t 2. Tarjeta");                             //Se solicita una opcion
                         if (selec == 1) {                                                                   //Si selecciona 1, es para pagar un servicio
                            IDCuentaSelec = mostrarCuenta(IDClient, true, "Seleccione una cuenta");          //Muesta todas las cuentas y retorna la cuenta que seleccione el usuaruio
-                           Pagar.servicio(clienteArray, cuentaArray, IDCuentaSelec);                        //Llama al metodo sercios | se envia el array de clentes, el array de cuentas y el ID de la cuenta que selecciono
+                           complete = Pagar.servicio(clienteArray, cuentaArray, IDCuentaSelec);             //Llama al metodo sercios | se envia el array de clentes, el array de cuentas y el ID de la cuenta que selecciono
                         }else if(selec == 2){                                                               //Si selecciona 2, es para pagar una tarjeta
                                 IDCuentaSelec = mostrarCuenta(IDClient, false, "Seleccione la tarjeta que desea pagar"); //Solicita la tarjeta que se desea pagar
-                            int IDCuentaPagar = mostrarCuenta(IDClient, true, "Seleccione la cuenta con la que desea pagar");//Solicta la cuenta con la que desea pagar la tarjeta previamente seleccionada
-                            Pagar.tarjeta(clienteArray, cuentaArray, IDCuentaSelec, IDCuentaPagar);         //Llama al metodo tarjeta | se envia el array cliente, array de cuentas, ID de la tarjeta que se desea pagar y el ID de la cuenta con la que se va a pagar
+                           int IDCuentaPagar = mostrarCuenta(IDClient, true, "Seleccione la cuenta con la que desea pagar");//Solicta la cuenta con la que desea pagar la tarjeta previamente seleccionada
+                           complete = Pagar.tarjeta(clienteArray, cuentaArray, IDCuentaSelec, IDCuentaPagar);         //Llama al metodo tarjeta | se envia el array cliente, array de cuentas, ID de la tarjeta que se desea pagar y el ID de la cuenta con la que se va a pagar
                         } 
                             Util.actualizarTXT(cuentaArray);                                                //Medoto actulizarTXT, recorre todo el TXT y lo actuliza con los cambios realizados en la transferencia
-                            Archivo.añadirInicia(Util.campo(clienteArray),(Util.campo(accesoArray)),Util.campo(cuentaArray),logArray+1);  //Actualiza el archivo inicializador
+                            if (complete) {logArray = logArray+1;}  
+                            Archivo.añadirInicia(Util.campo(clienteArray),(Util.campo(accesoArray)),Util.campo(cuentaArray),logArray);  //Actualiza el archivo inicializador
+                            continuar=Util.confirmacion("Desea continuar");
                         break;
                     case 5:                         //Opcion 5, Ver historial de pagos de una cuenta
                         IDCuentaSelec = mostrarCuenta(IDClient,true, "Seleccione la cuenta que desea ver el historial");    //Se solicita una cuenta
-                        Pagar.mostrarHistorial(IDClient, IDCuentaSelec);                                                    //Metodo mostrarHistoral | se envia el ID del cliente y el ID de la cuenta selecciona para ver el historial
+                        String historial = Pagar.mostrarHistorial(IDClient, IDCuentaSelec);                                 //Metodo mostrarHistoral | se envia el ID del cliente y el ID de la cuenta selecciona para ver el historial
+                        Util.ventanaMensa(historial);
+                        continuar=Util.confirmacion("Desea continuar");
+                        break;
+                    case 6:
+                        Util.ventanaMensa("Nombre Completo "+cliente.getNombre()+" "+cliente.getApellido()+"\nNumero de cedula "+cliente.getCedula()+"\nCorreo electronico "+cliente.getCorreo()+"\nNumero de telefonico "+cliente.getCelular());
+                        continuar=Util.confirmacion("Desea continuar");
                         break;
                     }
+                    }while(continuar);                                          //Hacer mientras continuar sea true
             }
         }
     }

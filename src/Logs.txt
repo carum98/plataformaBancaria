@@ -16,3 +16,14 @@
 18,20,Pago de servicio Proveedor Kolbi Numero de contrato 6855 Saldo Pagado 12000
 20,23,Pago de servicio Proveedor Cabletica Numero de contrato 15415 Saldo Pagado 12000
 20,23,Pago de servicio Proveedor AYA Numero de contrato 5157 Saldo Pagado 15000
+14,4,Pago de servicio Proveedor Kolbi Numero de contrato 1685418 Saldo Pagado 12000
+3,9,Pago de servicio Proveedor AYA Numero de contrato 6541685 Saldo Pagado 15000
+3,13,Pago de tarjeta de credito tarjeta ID 9 por un total de 15000
+14,3,Transferenia Numero de cuenta 11793 a nombre de Viriam por un monto de 30000
+14,3,Transferenia Numero de cuenta 11118 a nombre de Eduardo por un monto de 5000
+14,4,Transferenia Numero de cuenta 11367 a nombre de Carlos por un monto de 5000
+14,3,Transferenia Numero de cuenta 11118 a nombre de Carlos por un monto de 5000
+14,3,Transferenia Numero de cuenta 11118 a nombre de Carlos por un monto de 4500
+2,8,Pago de servicio Proveedor Tigo Numero de contrato 185165 Saldo Pagado 8000
+2,8,Pago de servicio Proveedor Kolbi Numero de contrato 645168 Saldo Pagado 12000
+3,9,Pago de servicio Proveedor Kolbi Numero de contrato 1685553 Saldo Pagado 6000

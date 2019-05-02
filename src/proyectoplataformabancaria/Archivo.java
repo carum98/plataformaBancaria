@@ -10,7 +10,6 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.util.Locale;
 import java.util.Scanner;
 
 /**
@@ -21,52 +20,50 @@ public class Archivo {
     
     int[] inicia = new int[4];
     
-    public void leerInicia() throws FileNotFoundException{
-        File file = new File("C:\\Users\\carum_000\\Desktop\\Cursos\\Nueva Carpeta\\ProyectoPlataformaBancaria\\src\\inicia.txt"); //se lee archivo con los valores inicales
-        Scanner scanner;
+    public void leerInicia() throws FileNotFoundException{//Metodo para leer el archivo TXT inicializador
+//        File ruta = new File("inicia.txt");
+//        System.out.println("La ruta del fichero es: " + ruta.getAbsolutePath());
+        File ruta = new File("C:\\Users\\carum_000\\Desktop\\Cursos\\Nueva Carpeta\\ProyectoPlataformaBancaria\\src\\inicia.txt"); //Ruta en al cual se encuentra el archivo inicializador
+        Scanner scanner;                                            //Instancia scanner
             try{
-            scanner = new Scanner(file);
-            String linea = scanner.nextLine();
-                Scanner delimitar = new Scanner(linea);
-                String iniciaCliente = delimitar.next(); //se guarda la valiriable inicial de cliente
-                String iniciaClave = delimitar.next();   //se guarda la valiriable inicial de la clave
-                String iniciaCuenta = delimitar.next();  //se guarda la valiriable inicial de las cuentas
-                String iniciaLogs = delimitar.next();
-                    inicia[0] = Integer.parseInt(iniciaCliente);    //se guarda en el array y se convierte a Integer
-                    inicia[1] = Integer.parseInt(iniciaClave);      //se guarda en el array y se convierte a Integer
-                    inicia[2] = Integer.parseInt(iniciaCuenta);     //se guarda en el array y se convierte a Integer
-                    inicia[3] = Integer.parseInt(iniciaLogs);
-            scanner.close();
+            scanner = new Scanner(ruta);                            //Se inicializa y se pasa la ruta del archivo que se desea leer
+            String linea = scanner.nextLine();                      //lee la cadena de texto hasta fin de linea   
+                Scanner delimitar = new Scanner(linea);             //Se estable delimnitador
+                String iniciaCliente = delimitar.next();            //Se lee el primer campo el cual corrseponde al inicializador de cliente
+                String iniciaClave = delimitar.next();              //Se lee el segundo campo el cual corresponde al inicializador de clave
+                String iniciaCuenta = delimitar.next();             //Se lee el tercer campo el cual correpode al inicializador de cuentas
+                String iniciaLogs = delimitar.next();               //Se lee el cuarto campo el cual correponde al inicializador del historial
+                    inicia[0] = Integer.parseInt(iniciaCliente);    //Convierte el valor inicializador de clientes a Integer y lo almacena en la array inicia en el campo 0
+                    inicia[1] = Integer.parseInt(iniciaClave);      //Convierte el valor inicializador de cuentas a Integer y lo almacena en la array inicia en el campo 1
+                    inicia[2] = Integer.parseInt(iniciaCuenta);     //Convierte el valor inicializador de cuenta a Integer y lo almacena en la array inicia en el campo 2
+                    inicia[3] = Integer.parseInt(iniciaLogs);       //Convierte el valor inicializador de logs a Integer y lo almacena en la array inicia en el campo 3
+            scanner.close();                                        //se cierra el ojeto scanner
         }catch (FileNotFoundException e) {
-            e.printStackTrace();
+            e.printStackTrace();                                    //Muestra si existen errores
         }
     }
     
-    public void añadirInicia(int valorCliente, int valorClave, int valorCuenta, int valorLog){
-        FileWriter flwriter = null;
+    public void añadirInicia(int valorCliente, int valorClave, int valorCuenta, int valorLog){//Metodo para añadir cantidades al archivo inicializador | recibe como parametros cantidad de clientes, cantidad de claves, cantidad de cuentas y cantidad de registros en el historial
+        FileWriter flwriter = null;                                 //Inicializa FileWriter en null
         try{
-            flwriter = new FileWriter("C:\\Users\\carum_000\\Desktop\\Cursos\\Nueva Carpeta\\ProyectoPlataformaBancaria\\src\\inicia.txt", false);
-            BufferedWriter bfwriter = new BufferedWriter(flwriter);
-            bfwriter.write(valorCliente+" ");   //agrega lo valores iniciales al TXT
-            bfwriter.write(valorClave+" ");
-            bfwriter.write(valorCuenta+" ");
-            bfwriter.write(valorLog+"");
-            bfwriter.close();
+            flwriter = new FileWriter("C:\\Users\\carum_000\\Desktop\\Cursos\\Nueva Carpeta\\ProyectoPlataformaBancaria\\src\\inicia.txt", false);//REcibe la ruta del archivo 
+            BufferedWriter bfwriter = new BufferedWriter(flwriter); //Inicializa BufferedWriter para añadir la linea completa
+            bfwriter.write(valorCliente+" ");                       //agrega el valor inicializador de clientes
+            bfwriter.write(valorClave+" ");                         //agrega el valor inicializador de claves
+            bfwriter.write(valorCuenta+" ");                        //agrega el valor inicializador de cuentas
+            bfwriter.write(valorLog+"");                            //agrega el valor inicializador de registros en el historial
+            bfwriter.close();                                       //Cierra el objeto bfwriter
         }catch (IOException e) {
-            e.printStackTrace();
+            e.printStackTrace();                                    //Muestra si existen errores
         }
         finally {
-        if (flwriter != null) {
-                try {
-                        flwriter.close();
-                } catch (IOException e) {
-                        e.printStackTrace();
-                }
-        }
-        }
+        if (flwriter != null) {                                     //Si la ruta no exite
+            try {
+                flwriter.close();
+            } catch (IOException e) {
+                e.printStackTrace();                                //Muestra el error
+            }}}
     }
-    
-    
     
     public static void guardar(Cliente[] clienteArray) throws IOException{
         FileWriter flwriter = null;      
@@ -199,7 +196,7 @@ public class Archivo {
     public static void guardar(Cuenta[] CuentaArray) throws IOException{
     FileWriter flwriter = null;      
     try{
-        flwriter = new FileWriter("C:\\Users\\carum_000\\Desktop\\Cursos\\Nueva Carpeta\\ProyectoPlataformaBancaria\\src\\Cuenta.txt");            
+        flwriter = new FileWriter("C:\\Users\\carum_000\\Desktop\\Cursos\\Nueva Carpeta\\ProyectoPlataformaBancaria\\src\\Cuenta1.txt");            
         BufferedWriter bfwrite = new BufferedWriter(flwriter);
             bfwrite.write("IDCliente , IDCuenta, Monto, Numero de Cuenta, Tipo de cuenta"+"\n");
         bfwrite.close();
@@ -219,7 +216,7 @@ public class Archivo {
     public static void añadir(Cuenta[] CuentaArray, int i, boolean reescribir) throws IOException{
         FileWriter flwriter = null;
         try{
-            flwriter = new FileWriter("C:\\Users\\carum_000\\Desktop\\Cursos\\Nueva Carpeta\\ProyectoPlataformaBancaria\\src\\Cuenta.txt", reescribir);
+            flwriter = new FileWriter("C:\\Users\\carum_000\\Desktop\\Cursos\\Nueva Carpeta\\ProyectoPlataformaBancaria\\src\\Cuenta1.txt", reescribir);
             BufferedWriter bfwriter = new BufferedWriter(flwriter);
             bfwriter.write(CuentaArray[i].getIDCliente()+","+CuentaArray[i].getIDCuenta()+","+CuentaArray[i].getMonto()+","+CuentaArray[i].getNumeroDeCuenta()+","+CuentaArray[i].getTipo()+"\n");
             bfwriter.close();
@@ -239,7 +236,7 @@ public class Archivo {
     
     public void leer(Cuenta[] CuentaArray) throws FileNotFoundException{
         leerInicia();  //se inicializa el metodo para que lea los valores inicales
-        File file = new File("C:\\Users\\carum_000\\Desktop\\Cursos\\Nueva Carpeta\\ProyectoPlataformaBancaria\\src\\Cuenta.txt");
+        File file = new File("C:\\Users\\carum_000\\Desktop\\Cursos\\Nueva Carpeta\\ProyectoPlataformaBancaria\\src\\Cuenta1.txt");
         Scanner scanner;
         try{
             scanner = new Scanner(file);
